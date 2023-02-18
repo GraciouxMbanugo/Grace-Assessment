@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <!-- is it this one here? Yes, okay, but those errors came back on my chrome console -->
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.js"
+			integrity="sha512-nO7wgHUoWPYGCNriyGzcFwPSF+bPDOR+NvtOYy2wMcWkrnCNPKBcFEkU80XIN14UVja0Gdnff9EmydyLlOL7mQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"></script>
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous" />
+		<title>Bootstrap example</title>
+	</head>
+	<body style="background-color: #e7e6e6;">
+		<div class="mt-5 mx-lg-5">
+			<div>
+                <div class="d-flex">
+                    <div class="align-items-center justify-content-center d-none d-lg-flex col-lg-6">
+                        <video id="videoHold" src="" style="width: 400px; height: 400px;" class="border border-black"></video>
+                    </div>
+					<div id="heading" style="gap: 10px" class="p-2 d-flex flex-column col-12 col-lg-6">
+                        <div
+                        class="d-flex p-2 align-items-center justify-content-between bg-white rounded">
+                            <button type="button" class="btn btn-primary">phase 1</button>
+                            
+                            <p>PHASE 2</p>
+                            <p>PHASE 3</p>
+                            <p>PHASE 4</p>
+                        </div>
+                        <p class="mt-5">Phase Content:</p>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			// const table = document.querySelector(".table > tbody");
+			const videoHold = document.getElementById("videoHold");
+			const heading = document.getElementById("heading");
+			console.log("Hello world");
+			function loadAdsense() {
+				// 	request.send();
+				$.ajax({
+					url: "data/adsense.json",
+					type: "GET",
+					dataType: "json",
+					success: function (data) {
+						// handle the response data
+						console.log(data.phase1);
+						populateAdsense(data.phase1);
+					},
+					error: function (xhr, textStatus, errorThrown) {
+						// handle the error
+						console.log("Error: " + errorThrown);
+					},
+				});
+			}
+            
+            function setVideoSrc(src) {
+                videoHold.src = src
+            }
+
+			function populateAdsense(data) {
+				data.map((itr) => {
+					heading.innerHTML += `
+                        <div style="cursor: pointer;" class="p-2 bg-white d-flex align-items-center justify-content-between rounded-lg">
+                            <div style="gap: 10px" class="d-flex align-items-center">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    onclick="setVideoSrc('${itr.link}')"
+                                    class="bi bi-play-circle-fill text-primary d-block me-4"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
+                                </svg>
+                                <p>${itr.title}</p>
+                            </div>
+                            <b>${itr.duration}</b>
+                        </div>
+                    `;
+				});
+			}
+
+			document.addEventListener("DOMContentLoaded", () => {
+				loadAdsense();
+			});
+		</script>
+	</body>
+</html>
